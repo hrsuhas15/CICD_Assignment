@@ -1,22 +1,16 @@
 name: Run and Test Docker Image
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
 
-jobs: 
-  dummy-job:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Dummy step
-        run: echo "This is a dummy job"
-
+jobs:
   run-and-test:
     runs-on: ubuntu-latest
 
-    needs: build-and-push
+    needs: Build and Push Docker Image
     
     steps:
       - name: Checkout code
