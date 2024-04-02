@@ -24,10 +24,10 @@ grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
 grid_search.fit(X, y)
 
 # Get the best model from the grid search
-best_model = grid_search.best_estimator_
+model = grid_search.best_estimator_
 
 # Train the best model on the entire training set
-best_model.fit(X, y)
+model.fit(X, y)
 
 
 with open("model.pkl", 'wb') as f:
