@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
+from sklearn.model_selection import GridSearchCV
 import pickle
 import numpy as np
 
@@ -22,8 +23,21 @@ model = Pipeline(steps=[
     ('classifier', LogisticRegression(max_iter=1000, solver='lbfgs'))
 ])
 
-# Train the model
-model.fit(X, y)
+# Define hyperparameters to tune
+param_grid = {
+    'classifier__C': [0.001, 0.01, 0.1, 1, 10, 100]
+}
+
+# Perform grid search cross-validation to find the best hyperparameters
+grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X, y)
+
+# Get the best model from the grid search
+best_model = grid_search.best_estimator_
+
+# Train the best model on the entire training set
+best_model.fit(X, y)
+
 
 with open("model.pkl", 'wb') as f:
     pickle.dump(model, f)
