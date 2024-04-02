@@ -6,7 +6,9 @@ on:
     types:
       - completed
     status:
-      - success 
+      - success
+    branches:
+      - '*'
 
 jobs:
   run-and-test:
