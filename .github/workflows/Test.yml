@@ -1,12 +1,14 @@
-name: Run and Test Docker Image
+name: Test
 
 on:
   workflow_run:
-    workflows: ["Build and Push Docker Image"]
+    workflows: ["Train"]
     types:
       - completed
     status:
-      - success 
+      - success
+    branches:
+      - '*'
 
 jobs:
   run-and-test:
