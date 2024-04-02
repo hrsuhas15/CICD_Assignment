@@ -21,7 +21,7 @@ param_grid = {
 }
 
 # Perform grid search cross-validation to find the best hyperparameters
-grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
+grid_search = GridSearchCV(model, param_grid, cv=10, scoring='accuracy')
 grid_search.fit(X, y)
 
 # Get the best model from the grid search
