@@ -37,10 +37,6 @@ jobs:
       
       - name: Check score
         run: |
-          if [ $(echo "${{ steps.check_score.outputs.score }}" | awk '{print $NF}') -gt 0.50 ]; then
-            echo "Score is greater than 0.50"
-            exit 0
-          else
-            echo "Score is not greater than 0.50"
-            exit 1
-          fi
+          echo "Score:"
+          echo "${{ steps.check_score.outputs.score }}"
+          if [[ `echo "${{ steps.check_score.outputs.score }} 0.50" | awk '{print ($1 < $2)}'` == 1 ]]; then echo "Insufficient Accuracy" && exit 1; fi
