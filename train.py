@@ -9,8 +9,9 @@ y = df['Disease'].to_numpy()
 labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
-model = LogisticRegression().fit(X, y)
-# NEED TO INCREASE ACCURACY
+#model = LogisticRegression().fit(X, y)
+model = LogisticRegression(random_state=42, max_iter=1000)
+model.fit(X, y)
 
 with open("model.pkl", 'wb') as f:
     pickle.dump(model, f)
