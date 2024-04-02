@@ -10,6 +10,7 @@ labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
 model = LogisticRegression().fit(X, y)
+# NEED TO INCREASE ACCURACY
 
 with open("model.pkl", 'wb') as f:
     pickle.dump(model, f)
