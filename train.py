@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
 import pickle
 import numpy as np
 
@@ -17,11 +17,15 @@ model = AdaBoostClassifier()
 # Define hyperparameters to tune
 param_grid = {
     'n_estimators': [50, 100, 200],
-    'learning_rate': [0.01, 0.1, 1.0]
+    'learning_rate': [0.01, 0.1, 1.0, 10.0]
 }
 
+# Perform feature scaling
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
 # Perform grid search cross-validation to find the best hyperparameters
-grid_search = GridSearchCV(model, param_grid, cv=10, scoring='accuracy')
+grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
 grid_search.fit(X, y)
 
 # Get the best model from the grid search
