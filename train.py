@@ -12,16 +12,13 @@ labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
 #model = LogisticRegression().fit(X, y)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
 # Standardize numerical features
 scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+X_train_scaled = scaler.fit_transform(X)
 
 # Train the model
 model = LogisticRegression(random_state=42, max_iter=1000)
-model.fit(X_train_scaled, y_train)
+model.fit(X_train_scaled, y)
 
 with open("model.pkl", 'wb') as f:
     pickle.dump(model, f)
