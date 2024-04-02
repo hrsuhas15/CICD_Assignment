@@ -1,7 +1,5 @@
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 import pickle
 import numpy as np
@@ -12,20 +10,13 @@ y = df['Disease'].to_numpy()
 labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
-# Define preprocessing steps (scaling numerical features)
-preprocessor = Pipeline(steps=[
-    ('scaler', StandardScaler())
-])
-
-# Define the logistic regression model
-model = Pipeline(steps=[
-    ('preprocessor', preprocessor),
-    ('classifier', LogisticRegression(max_iter=1000, solver='lbfgs'))
-])
+# Define logistic regression model
+model = LogisticRegression()
 
 # Define hyperparameters to tune
 param_grid = {
-    'classifier__C': [0.001, 0.01, 0.1, 1, 10, 100]
+    'C': [0.001, 0.01, 0.1, 1, 10, 100],
+    'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']
 }
 
 # Perform grid search cross-validation to find the best hyperparameters
