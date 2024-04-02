@@ -1,7 +1,10 @@
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.ensemble import RandomForestClassifier
 import pickle
 import numpy as np
 
@@ -12,13 +15,28 @@ labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
 #model = LogisticRegression().fit(X, y)
-# Standardize numerical features
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X)
+# Define preprocessing steps for numerical and categorical features
+numeric_features = X.select_dtypes(include=['int64', 'float64']).columns
+numeric_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='mean')),
+    ('scaler', StandardScaler())])
+
+categorical_features = X.select_dtypes(include=['object']).columns
+categorical_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='most_frequent')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numeric_features),
+        ('cat', categorical_transformer, categorical_features)])
+
+# Define the model
+model = Pipeline(steps=[('preprocessor', preprocessor),
+                        ('classifier', RandomForestClassifier(random_state=42))])
 
 # Train the model
-model = LogisticRegression(random_state=42, max_iter=1000)
-model.fit(X_train_scaled, y)
+model.fit(X, y)
 
 with open("model.pkl", 'wb') as f:
     pickle.dump(model, f)
