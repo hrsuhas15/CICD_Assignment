@@ -11,8 +11,9 @@ y = df['Disease'].to_numpy()
 labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
+base_estimator=RandomForestClassifier()
 # Define Random Forest Classifier with AdaBoost
-model = AdaBoostClassifier(base_estimator=RandomForestClassifier())
+model = AdaBoostClassifier(base_estimator=base_estimator)
 
 # Define hyperparameters to tune
 param_grid = {
