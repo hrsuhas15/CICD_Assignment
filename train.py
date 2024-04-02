@@ -1,5 +1,6 @@
 import pandas as pd
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 import pickle
 import numpy as np
@@ -10,14 +11,13 @@ y = df['Disease'].to_numpy()
 labels = np.sort(np.unique(y))
 y = np.array([np.where(labels == x) for x in y]).flatten()
 
-# Define Gradient Boosting Classifier model
-model = GradientBoostingClassifier()
+# Define Random Forest Classifier with AdaBoost
+model = AdaBoostClassifier(base_estimator=RandomForestClassifier())
 
 # Define hyperparameters to tune
 param_grid = {
-    'n_estimators': [50, 100, 150],
-    'learning_rate': [0.01, 0.1, 0.2],
-    'max_depth': [3, 4, 5]
+    'n_estimators': [50, 100, 200],
+    'learning_rate': [0.01, 0.1, 1.0]
 }
 
 # Perform grid search cross-validation to find the best hyperparameters
