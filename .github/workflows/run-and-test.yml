@@ -5,13 +5,19 @@ on:
     branches:
       - '*'
 
-jobs:
+jobs: 
+  dummy-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dummy step
+        run: echo "This is a dummy job"
+
   run-and-test:
     runs-on: ubuntu-latest
 
     needs: build-and-push
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && success() }}
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
