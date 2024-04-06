@@ -1,4 +1,4 @@
-name: Train
+name: Workflow
 
 on:
   pull_request:
@@ -45,7 +45,6 @@ jobs:
       - name: Run Docker container
         run: docker run hrsuhas15/runtest:latest
 
-      # Check the output score
       - name: Get output score
         id: check_score
         run: |
